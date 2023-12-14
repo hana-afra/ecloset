@@ -36,7 +36,7 @@ def api_endponit_item_upload():
             # Your existing error checking logic
             error = False
             if not error:
-                response = supabase.table('item').insert({
+                response = supabase.table('item').upsert({
                     "name": name,
                     "price": price,
                     "size": size,
