@@ -3,7 +3,7 @@ import json
 from supabase import create_client, Client
 
 app = Flask(__name__)
-/
+
 #This is the very stupid way to store private/confidential data inside GIT
 #Store inside a file to be ignored
 url="https://jzredydxgjflzlgkamhn.supabase.co"
