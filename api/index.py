@@ -18,7 +18,7 @@ def api_item_get():
 @app.route('/item.upload', methods=['POST'])
 def api_endpoint_item_upload():
     if request.method == 'POST':
-        try:
+        
             # Hardcoded values for testing
             name = "Test Item"
             price = 10.99
@@ -34,7 +34,7 @@ def api_endpoint_item_upload():
             # Your existing error checking logic
             error = False
             if not error:
-                response = supabase.table('item').upsert({
+                response = supabase.table('item').insert({
                     "name": name,
                     "price": price,
                     "size": size,
@@ -47,15 +47,6 @@ def api_endpoint_item_upload():
                     "image_path": image_path
                 }).execute()
 
-                if len(response.data) == 0:
-                    error = 'Error creating the item'
-
-            if error:
-                return json.dumps({'status': 500, 'message': error})
-
+                
+    else:
             return json.dumps({'status': 200, 'message': '', 'data': response.data})
-
-        except Exception as e:
-            return json.dumps({'status': 500, 'message': f'Error: {str(e)}'})
-
-    return json.dumps({'status': 400, 'message': 'Bad Request'})
