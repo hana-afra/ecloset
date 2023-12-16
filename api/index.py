@@ -32,22 +32,25 @@ def api_endpoint_item_upload():
             id_commune = data.get('id_commune')
             id_type = data.get('id_type')
             id_user = data.get('id_user')
+            print(f'name: {name}, price: {price}, size: {size}, image_path: {image_path}, decription : {description}')
+
 
             # Your existing error checking logic
             error = False
             if not error:
                 response = supabase.table('item').insert({
-                    "name": name,
-                    "price": price,
-                    "size": size,
-                    "description": description,
-                    "id_user": id_user,
-                    "id_commune": id_commune,
-                    "id_wilaya": id_wilaya,
-                    "id_type": id_type,
-                    "id_category": id_category,
-                    "image_path": image_path
-                }).execute()
+    "name": "Test Item",
+    "price": 10.99,
+    "size": "M",
+    "description": "Test description",
+    "id_user": "test_user_id",
+    "id_commune": 1,
+    "id_wilaya": 1,
+    "id_type": 1,
+    "id_category": 1,
+    "image_path": "test_image_path"
+}).execute()
+
 
                 if len(response.data) == 0:
                     error = 'Error creating the item'
