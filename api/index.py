@@ -16,7 +16,7 @@ def api_item_get():
    return json.dumps(response.data)
 
 @app.route('/item.upload', methods=['POST'])
-def api_endponit_item_upload():
+def api_endpoint_item_upload():
     if request.method == 'POST':
         try:
             # Retrieve data from the JSON request body
@@ -36,7 +36,7 @@ def api_endponit_item_upload():
             # Your existing error checking logic
             error = False
             if not error:
-                response = supabase.table('item').upsert({
+                response = supabase.table('item').insert({
                     "name": name,
                     "price": price,
                     "size": size,
