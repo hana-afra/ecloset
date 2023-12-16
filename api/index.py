@@ -19,38 +19,33 @@ def api_item_get():
 def api_endpoint_item_upload():
     if request.method == 'POST':
         try:
-            # Retrieve data from the JSON request body
-            data = request.json
-
-            name = data.get('name')
-            price = data.get('price')
-            size = data.get('size')
-            image_path = data.get('image_path')
-            description = data.get('description')
-            id_wilaya = data.get('id_wilaya')
-            id_category = data.get('id_category')
-            id_commune = data.get('id_commune')
-            id_type = data.get('id_type')
-            id_user = data.get('id_user')
-            print(f'name: {name}, price: {price}, size: {size}, image_path: {image_path}, decription : {description}')
-
+            # Hardcoded values for testing
+            name = "Test Item"
+            price = 10.99
+            size = "M"
+            image_path = "test_image_path"
+            description = "Test description"
+            id_wilaya = "test_wilaya_id"
+            id_category = 1  # Adjust based on your actual data type
+            id_commune = 1   # Adjust based on your actual data type
+            id_type = 1      # Adjust based on your actual data type
+            id_user = "test_user_id"
 
             # Your existing error checking logic
             error = False
             if not error:
-                response = supabase.table('item').insert({
-    "name": "Test Item",
-    "price": 10.99,
-    "size": "M",
-    "description": "Test description",
-    "id_user": "test_user_id",
-    "id_commune": 1,
-    "id_wilaya": 1,
-    "id_type": 1,
-    "id_category": 1,
-    "image_path": "test_image_path"
-}).execute()
-
+                response = supabase.table('item').upsert({
+                    "name": name,
+                    "price": price,
+                    "size": size,
+                    "description": description,
+                    "id_user": id_user,
+                    "id_commune": id_commune,
+                    "id_wilaya": id_wilaya,
+                    "id_type": id_type,
+                    "id_category": id_category,
+                    "image_path": image_path
+                }).execute()
 
                 if len(response.data) == 0:
                     error = 'Error creating the item'
