@@ -15,21 +15,20 @@ def api_item_get():
    response = supabase.table('item').select("*,wilaya(name)").execute()
    return json.dumps(response.data)
 
-@app.route('/item.upload', methods=['POST'])
+@app.route('/item.upload', methods=['GET','POST'])
 def api_endpoint_item_upload():
-    if request.method == 'POST':
-        
-            # Hardcoded values for testing
-            name = "Test Item"
-            price = 10.99
-            size = "M"
-            image_path = "test_image_path"
-            description = "Test description"
-            id_wilaya = "test_wilaya_id"
-            id_category = 1  # Adjust based on your actual data type
-            id_commune = 1   # Adjust based on your actual data type
-            id_type = 1      # Adjust based on your actual data type
-            id_user = "test_user_id"
+    
+            # Retrieve data from the JSON request body
+            name = request.form.get('name')
+            price = request.form.get('price')
+            size = request.form.get('size')
+            image_path = request.form.get('image_path')
+            description = request.form.get('description')
+            id_wilaya = request.form.get('id_wilaya')
+            id_category = request.form.get('id_category')
+            id_commune = request.form.get('id_commune')
+            id_type = request.form.get('id_type')
+            id_user = request.form.get('id_user')
 
             # Your existing error checking logic
             error = False
@@ -48,5 +47,10 @@ def api_endpoint_item_upload():
                 }).execute()
 
                 
-    else:
-            return json.dumps({'status': 200, 'message': '', 'data': response.data})
+
+            if error:
+                return json.dumps({'status': 500, 'message': error})
+
+            return json.dumps({'status':200,'message':'','data':response.data[0]})
+
+        
