@@ -22,9 +22,6 @@ def api_wilayas_get():
    response = supabase.table('wilaya').select('*').execute()
    return json.dumps(response.data)
 
-
-
-
 #fetch communes
 @app.route('/communes.get')
 def api_communes_get(): 
@@ -36,39 +33,6 @@ def api_communes_get():
 def api_itemuser_get(): 
    response = supabase.table('item').select("*, user: user(name, phone, profile_picture)").execute()
    return json.dumps(response.data)
-
-@app.route('/item.update',methods=['POST','GET'])
-def api_item_update():
-   id_item= request.args.get('id_item')
-   name= request.args.get('name')
-   price= request.args.get('price')
-   size= request.args.get('size')
-   image_path= request.args.get('image_path')
-   description= request.args.get('description')
-   id_wilaya= request.args.get('id_wilaya')
-   id_category= request.args.get('id_category')
-   id_commune= request.args.get('id_commune')
-   id_type= request.args.get('id_type')
-   id_user= request.args.get('id_user')
-   
-
-   error =False
-   if not error:  
-        try:           
-            # Example: Your Supabase API endpoint for updating user profile  
-            response = supabase.table('item').update({"name": name, "price": price, "size": size, "description": description, "id_user": id_user, "id_commune": id_commune, "id_wilaya": id_wilaya, "id_type" : id_type, "id_category": id_category, "image_path": image_path}).eq('id_item', id_item).execute()
-            if len(response.data) == 0:                
-                error = 'Error updating user profile.'  
-        except Exception as e:            
-            error = f'Unexpected error occurred: {e}'  
-    # Return JSON response  
-   if error:        
-        return json.dumps({'status': 500, 'message': error})  
-   return json.dumps({'status': 200, 'message': 'User profile updated successfully'})
-
-
-
-
 
 
 #fetch all items
@@ -226,6 +190,34 @@ def api_user_update_profile():
     if error:        
         return json.dumps({'status': 500, 'message': error})  
     return json.dumps({'status': 200, 'message': 'User profile updated successfully'})
+
+
+
+
+@app.route('/item.update',methods=['GET','POST'])
+def api_item_update():
+   name= request.args.get('name')
+   price= request.args.get('price')
+   size= request.args.get('size')
+   image_path= request.args.get('image_path')
+   description= request.args.get('description')
+   id_wilaya= request.args.get('id_wilaya')
+   id_category= request.args.get('id_category')
+   id_commune= request.args.get('id_commune')
+   id_type= request.args.get('id_type')
+   id_user= request.args.get('id_user')
+   id_item= request.args.get('id_item')
+
+   error =False
+   if (not error):   
+       response = supabase.table('item').update({"name": name, "price": price, "size": size, "description": description, "id_user": id_user, "id_commune": id_commune, "id_wilaya": id_wilaya, "id_type" : id_type, "id_category": id_category, "image_path": image_path}).eq('id_item', id_item).execute()
+       print(str(response.data))
+       if len(response.data)==0:
+           error='Error creating the user'       
+   if error:
+       return json.dumps({'status':500,'message':error})       
+  
+   return json.dumps({'status':200,'message':'','data':response.data})
 
 
 
