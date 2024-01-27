@@ -23,17 +23,7 @@ def api_wilayas_get():
    return json.dumps(response.data)
 
 
-@app.route('/wilayas.get/<int:wilaya_id>', methods=['GET'])
-def api_wilayas_get(wilaya_id):
-    # Fetch the wilaya name based on the provided ID
-    response = supabase.table('wilaya').select('name').eq('id_wilaya', wilaya_id).execute()
-    
-    # Check if the wilaya with the given ID exists
-    if response.status_code == 200 and len(response.data) > 0:
-        wilaya_name = response.data[0]['name']
-        return jsonify({'wilaya_name': wilaya_name})
-    else:
-        return jsonify({'error': 'Wilaya not found'})
+
 
 #fetch communes
 @app.route('/communes.get')
@@ -53,7 +43,7 @@ def api_item_update():
    name= request.args.get('name')
    price= request.args.get('price')
    size= request.args.get('size')
-   #image_path= request.args.get('image_path')
+   image_path= request.args.get('image_path')
    description= request.args.get('description')
    id_wilaya= request.args.get('id_wilaya')
    id_category= request.args.get('id_category')
@@ -66,7 +56,7 @@ def api_item_update():
    if not error:  
         try:           
             # Example: Your Supabase API endpoint for updating user profile  
-            response = supabase.table('item').update({"name": name, "price": price, "size": size, "description": description, "id_user": id_user, "id_commune": id_commune, "id_wilaya": id_wilaya, "id_type" : id_type, "id_category": id_category}).eq('id_item', id_item).execute()
+            response = supabase.table('item').update({"name": name, "price": price, "size": size, "description": description, "id_user": id_user, "id_commune": id_commune, "id_wilaya": id_wilaya, "id_type" : id_type, "id_category": id_category, "image_path": image_path}).eq('id_item', id_item).execute()
             if len(response.data) == 0:                
                 error = 'Error updating user profile.'  
         except Exception as e:            
