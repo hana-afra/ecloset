@@ -34,8 +34,9 @@ def api_itemuser_get():
    response = supabase.table('item').select("*, user: user(name, phone, profile_picture)").execute()
    return json.dumps(response.data)
 
-@app.route('/item.update',methods=['GET','POST'])
+@app.route('/item.update',methods=['POST','GET'])
 def api_item_update():
+   id_item= request.args.get('id_item')
    name= request.args.get('name')
    price= request.args.get('price')
    size= request.args.get('size')
@@ -46,7 +47,7 @@ def api_item_update():
    id_commune= request.args.get('id_commune')
    id_type= request.args.get('id_type')
    id_user= request.args.get('id_user')
-   id_item= request.args.get('id_item')
+   
 
    error =False
    if not error:  
