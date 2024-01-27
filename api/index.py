@@ -49,15 +49,21 @@ def api_item_update():
    id_item= request.args.get('id_item')
 
    error =False
-   if (not error):   
-       response = supabase.table('item').update({"name": name, "price": price, "size": size, "description": description, "id_user": id_user, "id_commune": id_commune, "id_wilaya": id_wilaya, "id_type" : id_type, "id_category": id_category, "image_path": image_path}).eq('id_item', id_item).execute()
-       print(str(response.data))
-       if len(response.data)==0:
-           error='Error creating the user'       
-   if error:
-       return json.dumps({'status':500,'message':error})       
-  
-   return json.dumps({'status':200,'message':'','data':response.data})
+   if not error:  
+        try:           
+            # Example: Your Supabase API endpoint for updating user profile  
+            response = supabase.table('item').update({"name": name, "price": price, "size": size, "description": description, "id_user": id_user, "id_commune": id_commune, "id_wilaya": id_wilaya, "id_type" : id_type, "id_category": id_category, "image_path": image_path}).eq('id_item', id_item).execute()
+            if len(response.data) == 0:                
+                error = 'Error updating user profile.'  
+        except Exception as e:            
+            error = f'Unexpected error occurred: {e}'  
+    # Return JSON response  
+   if error:        
+        return json.dumps({'status': 500, 'message': error})  
+   return json.dumps({'status': 200, 'message': 'User profile updated successfully'})
+
+
+
 
 
 
