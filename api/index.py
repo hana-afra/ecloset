@@ -476,5 +476,34 @@ def unfollow_user():
 
     return json.dumps({'status': 200, 'message': 'Successfully unfollowed user.'})
 
+
+
+from flask import jsonify
+
+@app.route('/get_followers_count', methods=['GET'])
+def get_followers_count():
+    user_id = request.args.get('user_id')
+
+    if not user_id:
+        return jsonify({'status': 400, 'message': 'user_id is required.'})
+
+    # Get the count of followers for the user
+    followers_count = len(supabase.table('followers').select().eq('followed_id', user_id).execute().get('data', []))
+
+    return jsonify({'status': 200, 'followers_count': followers_count})
+
+@app.route('/get_following_count', methods=['GET'])
+def get_following_count():
+    user_id = request.args.get('user_id')
+
+    if not user_id:
+        return jsonify({'status': 400, 'message': 'user_id is required.'})
+
+    # Get the count of users the user is following
+    following_count = len(supabase.table('followers').select().eq('follower_id', user_id).execute().get('data', []))
+
+    return jsonify({'status': 200, 'following_count': following_count})
+
+
 if __name__ == '__main__':
     app.run(debug=True)
