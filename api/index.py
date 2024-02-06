@@ -382,6 +382,44 @@ def api_users_login():
    return json.dumps({'status':500,'message':error})
 #followers
 
+@app.route('/get_followers_count', methods=['GET','POST'])
+def get_followers_count():
+    user_id = request.args.get('id_user')
+
+    if not user_id:
+        return json.dumps({'status': 400, 'message': 'user_id is required.'})
+
+    # Get the count of followers for the user
+    response = supabase.table('followers').select('*').eq('followed_id', user_id).execute()
+
+    print("Full Response:", response)  # Add this line to print the entire response content
+
+    # Initialize followers_count with a default value
+    followers_count = 0
+    if len(response.data):
+        data = len(response.data)   
+        print("Data:", data)
+        followers_count = data
+    return json.dumps({'status': 200, 'followers_count': followers_count})
+
+@app.route('/get_following_count', methods=['GET'])
+def get_following_count():
+    user_id = request.args.get('id_user')
+
+    if not user_id:
+        return json.dumps({'status': 400, 'message': 'user_id is required.'})
+    # Initialize followers_count with a default value
+    following_count = 0
+
+    # Get the count of users the user is following
+    response = supabase.table('followers').select('*').eq('follower_id', user_id).execute()
+    if len(response.data):
+        data = len(response.data)   
+        print("Data:", data)
+        following_count = data
+
+    return json.dumps({'status': 200, 'following_count': following_count})
+
 @app.route('/check_follow_user', methods=['GET','POST'])
 def check_follow_user():
     #data = request.get_json()
